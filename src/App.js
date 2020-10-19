@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import './App.css';
 import logo from './logo.svg';
-
+import PriceTable from "./components/PriceTable";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
       {/* <div className="App"> */}
-      <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -43,9 +43,14 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
       {/* </div> */}
-    </Container>
+      <PriceTable pageName='Nasonex' pageId='1' rows={
+        [
+          { priceId: 1, price: '$27.99', createdTime: new Date().toLocaleString() }
+        ]
+      } ></PriceTable>
+    </Container >
   );
 }
 
