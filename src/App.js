@@ -4,6 +4,12 @@ import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from '
 import './App.css';
 import logo from './logo.svg';
 import PriceTable from "./components/PriceTable";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
   return (
@@ -14,7 +20,7 @@ function App() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
+            <Nav.Link href="/price">Price</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -45,11 +51,13 @@ function App() {
         </a>
       </header> */}
       {/* </div> */}
-      <PriceTable pageName='Nasonex' pageId='1' rows={
-        [
-          { priceId: 1, price: '$27.99', createdTime: new Date().toLocaleString() }
-        ]
-      } ></PriceTable>
+      <Router>
+        <Switch>
+          <Route exact path="/price/:pageId">
+            <PriceTable pageId='1' ></PriceTable>
+          </Route>
+        </Switch>
+      </Router>
     </Container >
   );
 }
