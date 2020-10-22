@@ -260,7 +260,7 @@ function PageTable() {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
                         <td><Link to={`/pages/${row.id}`}>{utils.truncate_name(row.name)}</Link></td>
-                        <td><a target="_blank" href={row.url}>Link</a></td>
+                        <td><a target="_blank" rel="noopener noreferrer" href={row.url}>Link</a></td>
                         {/* <td>{row.created_time.slice(0, 19)}</td> */}
                         <td>{row.next_check.slice(0, 19)}</td>
                         <td>{row.freq}</td>

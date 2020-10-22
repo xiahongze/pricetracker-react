@@ -1,16 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import './App.css';
-import logo from './logo.svg';
-import PriceTable from "./components/PriceTable";
-import PageTable from "./components/PageTable";
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  Route, Switch
 } from "react-router-dom";
+import './App.css';
+import PageForm from "./components/PageForm";
+import PageTable from "./components/PageTable";
+// import logo from './logo.svg';
+import PriceTable from "./components/PriceTable";
 
 function App() {
   return (
@@ -60,6 +59,10 @@ function App() {
         </Switch>
         <Switch>
           <Route strict exact path="/pages" component={PageTable}>
+          </Route>
+        </Switch>
+        <Switch>
+          <Route strict exact path="/pages/:pageId" component={PageForm}>
           </Route>
         </Switch>
       </Router>
