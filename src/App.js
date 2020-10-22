@@ -53,8 +53,7 @@ function App() {
       {/* </div> */}
       <Router>
         <Switch>
-          <Route exact path="/price/:pageId">
-            <PriceTable pageId='1' ></PriceTable>
+          <Route exact path="/price/:pageId" component={PriceTable}>
           </Route>
         </Switch>
       </Router>

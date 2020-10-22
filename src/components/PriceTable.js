@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { useParams } from "react-router-dom";
 
 function fetch_price(pageId) {
     return {
@@ -11,8 +10,15 @@ function fetch_price(pageId) {
     }
 }
 
+/**
+ * 
+ * @param {Object} props 
+ * @param {Object} props.match
+ * @param {Object} props.match.params
+ * @param {String} props.match.params.pageId
+ */
 function PriceTable(props) {
-    const { pageId } = useParams();
+    const { pageId } = props.match.params;
     const data = fetch_price(pageId)
     return <Container>
         <h1>Prices for {data.pageName} - id {pageId}</h1>
