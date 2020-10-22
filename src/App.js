@@ -4,6 +4,7 @@ import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from '
 import './App.css';
 import logo from './logo.svg';
 import PriceTable from "./components/PriceTable";
+import PageTable from "./components/PageTable";
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +21,8 @@ function App() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="/price">Price</Nav.Link>
+            <Nav.Link href="/prices">Prices</Nav.Link>
+            <Nav.Link href="/pages">Pages</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -53,7 +55,11 @@ function App() {
       {/* </div> */}
       <Router>
         <Switch>
-          <Route exact path="/price/:pageId" component={PriceTable}>
+          <Route exact path="/prices/:pageId" component={PriceTable}>
+          </Route>
+        </Switch>
+        <Switch>
+          <Route strict exact path="/pages" component={PageTable}>
           </Route>
         </Switch>
       </Router>
