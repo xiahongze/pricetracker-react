@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import config from '../config'
+import config from '../config';
+import utils from "../utils";
 
 function fetch_pages() {
     return [
@@ -246,7 +247,7 @@ function PageTable() {
                     <th>#</th>
                     <th>Name</th>
                     <th>URL</th>
-                    <th>Created Time</th>
+                    {/* <th>Created Time</th> */}
                     <th>Next Check</th>
                     <th>Freq (hrs)</th>
                     <th>Retries</th>
@@ -258,9 +259,9 @@ function PageTable() {
                 {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><Link to={`/pages/${row.id}`}>{row.name}</Link></td>
+                        <td><Link to={`/pages/${row.id}`}>{utils.truncate_name(row.name)}</Link></td>
                         <td><a target="_blank" href={row.url}>Link</a></td>
-                        <td>{row.created_time.slice(0, 19)}</td>
+                        {/* <td>{row.created_time.slice(0, 19)}</td> */}
                         <td>{row.next_check.slice(0, 19)}</td>
                         <td>{row.freq}</td>
                         <td>{row.retry}</td>
