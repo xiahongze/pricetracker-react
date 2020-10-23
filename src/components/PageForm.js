@@ -24,6 +24,26 @@ class PageForm extends React.Component {
         this.setState(this.originState);
     }
 
+    /**
+     * 
+     * @param {String} label
+     * @param {String} propName
+     * @param {Boolean} asCol
+     * @param {Boolean} onChange
+     * @param {Boolean} disabled
+     * @param {String} formType
+     */
+    makeFormGroup(label, propName, asCol, onChange, disabled, formType = "text") {
+        const col = asCol ? Col : "div";
+        const onChangeFunc = onChange ? this.handleInputChange : null;
+        return <Form.Group as={col} key={label + propName}>
+            <Form.Label>{label}</Form.Label>
+            <Form.Control
+                type={formType} name={propName} disabled={disabled} placeholder={label}
+                value={this.state[propName]} onChange={onChangeFunc} />
+        </Form.Group>
+    }
+
     constructor(props) {
         super(props);
         const pageId = this.props?.match?.params?.pageId;
@@ -43,6 +63,7 @@ class PageForm extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.makeFormGroup = this.makeFormGroup.bind(this);
     }
 
     render() {
@@ -53,48 +74,36 @@ class PageForm extends React.Component {
                 <Form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                     {/* Display only properties */}
                     <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Page ID</Form.Label>
-                            <Form.Control placeholder="" disabled value={this.state.id} />
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>User ID</Form.Label>
-                            <Form.Control placeholder="" disabled value={this.state.user_id} />
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>Retry</Form.Label>
-                            <Form.Control name="retry" disabled value={this.state.retry} />
-                        </Form.Group>
+                        {
+                            [
+                                ['Page ID', 'id', true, false, true],
+                                ['User ID', 'user_id', true, false, true],
+                                ['Retry', 'retry', true, false, true]
+                            ].map(params => this.makeFormGroup(...params))
+                        }
                     </Form.Row>
 
                     <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Created Time</Form.Label>
-                            <Form.Control placeholder="" disabled value={this.state.created_time} />
-                        </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Label>Next Check</Form.Label>
-                            <Form.Control placeholder="" disabled value={this.state.next_check} />
-                        </Form.Group>
+                        {
+                            [
+                                ['Created Time', 'created_time', true, false, true],
+                                ['Next Check', 'next_check', true, false, true],
+                            ].map(params => this.makeFormGroup(...params))
+                        }
                     </Form.Row>
 
                     <br />
                     {/* text fields */}
-                    <Form.Group>
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleInputChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>URL</Form.Label>
-                        <Form.Control type="text" name="url" placeholder="URL" value={this.state.url} onChange={this.handleInputChange} />
-                    </Form.Group>
+                    {
+                        [
+                            ['Name', 'name', false, true, false],
+                            ['URL', 'url', false, true, false],
+                        ].map(params => this.makeFormGroup(...params))
+                    }
                     <br />
                     {/* other fields */}
                     <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Frequency</Form.Label>
-                            <Form.Control type="number" name="freq" placeholder="24" value={this.state.freq} onChange={this.handleInputChange} />
-                        </Form.Group>
+                        {this.makeFormGroup("Frequency", "freq", true, true, false, "number")}
                         <Form.Group as={Col}>
                             <Form.Label>Config</Form.Label>
                             <Form.Control as="select" name="config_id" onChange={this.handleInputChange} value={this.state.config_id}>
@@ -108,12 +117,9 @@ class PageForm extends React.Component {
                         </Form.Group>
                     </Form.Row>
 
-                    {/* <Form.Row> */}
                     <Button variant="primary" type="submit">Submit</Button>
-                    {/* add some whitespace */}
-                    {' '}
+                    {' '/* add some whitespace */}
                     <Button variant="secondary" type="reset">Reset</Button>
-                    {/* </Form.Row> */}
                 </Form>
             </Container>
         )
