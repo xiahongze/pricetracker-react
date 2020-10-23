@@ -19,7 +19,8 @@ function fetch_price(pageId) {
  * @param {String} props.match.params.pageId
  */
 function PriceTable(props) {
-    const { pageId } = props?.match?.params;
+    const pageId = props?.match?.params?.pageId || "-1";
+
     // const { pageId } = 0;
     const data = fetch_price(pageId)
     return <Container>
