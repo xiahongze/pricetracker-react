@@ -36,11 +36,14 @@ class PageForm extends React.Component {
     makeFormGroup(label, propName, asCol, onChange, disabled, formType = "text") {
         const col = asCol ? Col : "div";
         const onChangeFunc = onChange ? this.handleInputChange : null;
+        const inputField = formType != 'checkbox' ? <Form.Control
+            type={formType} name={propName} disabled={disabled} placeholder={label}
+            value={this.state[propName]} onChange={onChangeFunc} /> : <Form.Check
+                type="checkbox" name={propName} checked={this.state[propName]}
+                onChange={onChangeFunc} />;
         return <Form.Group as={col} key={label + propName}>
             <Form.Label>{label}</Form.Label>
-            <Form.Control
-                type={formType} name={propName} disabled={disabled} placeholder={label}
-                value={this.state[propName]} onChange={onChangeFunc} />
+            {inputField}
         </Form.Group>
     }
 
@@ -112,9 +115,7 @@ class PageForm extends React.Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group as={Col}>
-                            <Form.Check type="checkbox" name="active" label="Active?" checked={this.state.active} onChange={this.handleInputChange} />
-                        </Form.Group>
+                        {this.makeFormGroup("Active?", "active", true, true, false, "checkbox")}
                     </Form.Row>
 
                     <Button variant="primary" type="submit">Submit</Button>
