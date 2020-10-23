@@ -26,14 +26,15 @@ class PageForm extends React.Component {
 
     /**
      * 
-     * @param {String} label
-     * @param {String} propName
-     * @param {Boolean} asCol
-     * @param {Boolean} onChange
-     * @param {Boolean} disabled
-     * @param {String} formType
+     * @param {Object} opts
+     * @param {String} opts.label
+     * @param {String} opts.propName
+     * @param {Boolean} opts.asCol
+     * @param {Boolean} opts.onChange
+     * @param {Boolean} opts.disabled
+     * @param {String} opts.formType
      */
-    makeFormGroup(label, propName, asCol, onChange, disabled, formType = "text") {
+    makeFormGroup({ label, propName, asCol = true, onChange = true, disabled = false, formType = "text" } = {}) {
         const col = asCol ? Col : "div";
         const onChangeFunc = onChange ? this.handleInputChange : null;
         const inputField = formType != 'checkbox' ? <Form.Control
@@ -79,19 +80,19 @@ class PageForm extends React.Component {
                     <Form.Row>
                         {
                             [
-                                ['Page ID', 'id', true, false, true],
-                                ['User ID', 'user_id', true, false, true],
-                                ['Retry', 'retry', true, false, true]
-                            ].map(params => this.makeFormGroup(...params))
+                                { label: 'Page ID', propName: 'id', disabled: true, onChange: false },
+                                { label: 'User ID', propName: 'user_id', disabled: true, onChange: false },
+                                { label: 'Retry', propName: 'retry', disabled: true, onChange: false },
+                            ].map(this.makeFormGroup)
                         }
                     </Form.Row>
 
                     <Form.Row>
                         {
                             [
-                                ['Created Time', 'created_time', true, false, true],
-                                ['Next Check', 'next_check', true, false, true],
-                            ].map(params => this.makeFormGroup(...params))
+                                { label: 'Created Time', propName: 'created_time', disabled: true, onChange: false },
+                                { label: 'Next Check', propName: 'next_check', disabled: true, onChange: false },
+                            ].map(this.makeFormGroup)
                         }
                     </Form.Row>
 
@@ -99,14 +100,14 @@ class PageForm extends React.Component {
                     {/* text fields */}
                     {
                         [
-                            ['Name', 'name', false, true, false],
-                            ['URL', 'url', false, true, false],
-                        ].map(params => this.makeFormGroup(...params))
+                            { label: 'Name', propName: 'name', asCol: false },
+                            { label: 'URL', propName: 'url', asCol: false },
+                        ].map(this.makeFormGroup)
                     }
                     <br />
                     {/* other fields */}
                     <Form.Row>
-                        {this.makeFormGroup("Frequency", "freq", true, true, false, "number")}
+                        {this.makeFormGroup({ label: "Frequency", propName: "freq", formType: "number" })}
                         <Form.Group as={Col}>
                             <Form.Label>Config</Form.Label>
                             <Form.Control as="select" name="config_id" onChange={this.handleInputChange} value={this.state.config_id}>
@@ -115,7 +116,7 @@ class PageForm extends React.Component {
                                 }
                             </Form.Control>
                         </Form.Group>
-                        {this.makeFormGroup("Active?", "active", true, true, false, "checkbox")}
+                        {this.makeFormGroup({ label: "Active?", propName: "active", formType: "checkbox" })}
                     </Form.Row>
 
                     <Button variant="primary" type="submit">Submit</Button>
