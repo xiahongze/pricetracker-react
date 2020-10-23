@@ -9,10 +9,10 @@ test('renders learn react link', () => {
     // const linkElement = getByText(/price/i);
     expect(table).toBeInTheDocument();
     const header = table.firstChild;
+    expect(header.nodeName).toBe('THEAD');
     expect(header.childNodes.length).toBe(1); // one row header
     expect(header.firstChild.childNodes.length).toBe(8); // eight columns
     expect(table.childNodes.length).toBe(2);
     const tbody = table.childNodes[1];
-    // console.log(Object.keys(tbody));
-    // expect(tbody)
+    expect(tbody.nodeName).toBe('TBODY');
 });
