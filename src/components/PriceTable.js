@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import Nav from 'react-bootstrap/Nav';
 
 function fetch_price(pageId) {
     return {
@@ -20,9 +20,10 @@ function fetch_price(pageId) {
  */
 function PriceTable(props) {
     const { pageId } = props?.match?.params;
+    // const { pageId } = 0;
     const data = fetch_price(pageId)
     return <Container>
-        <h1>Prices for {data.pageName} - Page id <Link to={`/pages/${pageId}`}>{pageId}</Link></h1>
+        <h1>Prices for {data.pageName} - Page id <Nav.Link href={`/pages/${pageId}`}>{pageId}</Nav.Link></h1>
         <Table striped bordered hover>
             <thead>
                 <tr>

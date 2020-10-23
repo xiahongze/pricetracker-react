@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
-import { Link } from "react-router-dom";
 import config from '../config';
 import utils from "../utils";
+import Nav from 'react-bootstrap/Nav'
 
 function fetch_pages() {
     return [
@@ -241,7 +241,7 @@ function PageTable() {
     const data = fetch_pages()
     return <Container>
         <h1>Page List</h1>
-        <Table striped bordered hover>
+        <Table striped bordered hover data-testid="page-table">
             <thead>
                 <tr>
                     <th>#</th>
@@ -259,14 +259,14 @@ function PageTable() {
                 {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><Link to={`/pages/${row.id}`}>{utils.truncate_name(row.name)}</Link></td>
+                        <td><Nav.Link href={`/pages/${row.id}`}>{utils.truncate_name(row.name)}</Nav.Link></td>
                         <td><a target="_blank" rel="noopener noreferrer" href={row.url}>Link</a></td>
                         {/* <td>{row.created_time.slice(0, 19)}</td> */}
                         <td>{row.next_check.slice(0, 19)}</td>
                         <td>{row.freq}</td>
                         <td>{row.retry}</td>
                         <td>{row.active ? 'YES' : 'NO'}</td>
-                        <td><Link to={`/configs/${row.config_id}`}>{row.config_id}</Link></td>
+                        <td><Nav.Link href={`/configs/${row.config_id}`}>{row.config_id}</Nav.Link></td>
                     </tr>)
                 }
             </tbody>
