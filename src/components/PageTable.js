@@ -260,7 +260,7 @@ function PageTable() {
                 {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><Nav.Link href={`/pages/${row.id}`}>{utils.truncate_string(row.name, config.maxNameLength)}</Nav.Link></td>
+                        <td><Nav.Link href={`/pages/${row.id}`}>{utils.truncate(row.name, config.maxNameLength)}</Nav.Link></td>
                         <td><Nav.Link target="_blank" rel="noopener noreferrer" href={row.url}>Link</Nav.Link></td>
                         <td>{row.next_check.slice(0, 19)}</td>
                         <td>{row.retry}</td>

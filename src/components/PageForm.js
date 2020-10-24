@@ -1,52 +1,10 @@
 import React from 'react';
 import { Button, Container, Form, Col } from 'react-bootstrap';
+import utils from "../utils";
 
 class PageForm extends React.Component {
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        });
-    }
 
-    handleSubmit(event) {
-        alert('Your state is: ' + JSON.stringify(this.state));
-        event.preventDefault();
-    }
 
-    handleReset(event) {
-        // alert('Your state is: ' + JSON.stringify(this.originState));
-        // console.log(this.selectList)
-        // this.selectList.forEach(console.log)
-        event.preventDefault();
-        this.setState(this.originState);
-    }
-
-    /**
-     * 
-     * @param {Object} opts
-     * @param {String} opts.label
-     * @param {String} opts.propName
-     * @param {Boolean} opts.asCol
-     * @param {Boolean} opts.onChange
-     * @param {Boolean} opts.disabled
-     * @param {String} opts.formType
-     */
-    makeFormGroup({ label, propName, asCol = true, onChange = true, disabled = false, formType = "text" } = {}) {
-        const col = asCol ? Col : "div";
-        const onChangeFunc = onChange ? this.handleInputChange : null;
-        const inputField = formType != 'checkbox' ? <Form.Control
-            type={formType} name={propName} disabled={disabled} placeholder={label}
-            value={this.state[propName]} onChange={onChangeFunc} /> : <Form.Check
-                type="checkbox" name={propName} checked={this.state[propName]}
-                onChange={onChangeFunc} />;
-        return <Form.Group as={col} key={label + propName}>
-            <Form.Label>{label}</Form.Label>
-            {inputField}
-        </Form.Group>
-    }
 
     constructor(props) {
         super(props);
@@ -64,10 +22,10 @@ class PageForm extends React.Component {
             "config_id": 1
         };
         this.state = this.originState;
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-        this.makeFormGroup = this.makeFormGroup.bind(this);
+        this.handleInputChange = utils.handleInputChange.bind(this);
+        this.handleSubmit = utils.handleSubmit.bind(this);
+        this.handleReset = utils.handleReset.bind(this);
+        this.makeFormGroup = utils.makeFormGroup.bind(this);
     }
 
     render() {

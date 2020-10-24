@@ -63,7 +63,7 @@ function PageTable() {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
                         <td><Nav.Link href={`/configs/${row.id}`}>{row.name}</Nav.Link></td>
-                        <td>{utils.truncate_string(row.xpath, 40)}</td>
+                        <td>{utils.truncate(row.xpath, 40)}</td>
                         <td>{row.active ? 'YES' : 'NO'}</td>
                     </tr>)
                 }
