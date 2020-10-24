@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Form } from 'react-bootstrap';
+import { Button, Col, Container, Form, Badge } from 'react-bootstrap';
 
 class GenericForm extends React.Component {
     handleInputChange(event) {
@@ -51,8 +51,8 @@ class GenericForm extends React.Component {
 
     constructor(props, fetch, post) {
         super(props);
-        const id = props?.match?.params?.id; // use it to 
-        this.originState = fetch(id);
+        this.id = props?.match?.params?.id || "new"; // use it to 
+        this.originState = fetch(this.id);
         this.state = this.originState;
         this.post = post;
 
@@ -65,7 +65,7 @@ class GenericForm extends React.Component {
 
     makeForm(formBody) {
         return <Container>
-            <h1> {this.state.id + ""} </h1>
+            <h2><Badge variant="secondary">{this.id == "new" ? "New" : "Edit"}</Badge></h2>
             {formBody}
             <Form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                 <Button variant="primary" type="submit">Submit</Button>

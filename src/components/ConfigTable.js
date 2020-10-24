@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Table } from 'react-bootstrap';
-import config from '../config';
 import utils from "../utils";
 import Nav from 'react-bootstrap/Nav'
 
