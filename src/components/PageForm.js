@@ -1,10 +1,8 @@
 import React from 'react';
-import { Button, Container, Form, Col } from 'react-bootstrap';
+import { Button, Col, Container, Form } from 'react-bootstrap';
 import utils from "../utils";
 
 class PageForm extends React.Component {
-
-
 
     constructor(props) {
         super(props);
@@ -53,8 +51,6 @@ class PageForm extends React.Component {
                             ].map(this.makeFormGroup)
                         }
                     </Form.Row>
-
-                    <br />
                     {/* text fields */}
                     {
                         [
@@ -62,7 +58,6 @@ class PageForm extends React.Component {
                             { label: 'URL', propName: 'url', asCol: false },
                         ].map(this.makeFormGroup)
                     }
-                    <br />
                     {/* other fields */}
                     <Form.Row>
                         {this.makeFormGroup({ label: "Frequency", propName: "freq", formType: "number" })}
