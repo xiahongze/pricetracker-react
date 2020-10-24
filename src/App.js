@@ -6,6 +6,8 @@ import {
   Route, Switch
 } from "react-router-dom";
 import './App.css';
+import ConfigTable from "./components/ConfigTable";
+import ConfigForm from "./components/ConfigForm";
 import PageForm from "./components/PageForm";
 import PageTable from "./components/PageTable";
 // import logo from './logo.svg';
@@ -22,6 +24,7 @@ function App() {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="/prices">Prices</Nav.Link>
             <Nav.Link href="/pages">Pages</Nav.Link>
+            <Nav.Link href="/configs">Configs</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -57,12 +60,22 @@ function App() {
           <Route exact path="/prices/:pageId" component={PriceTable}>
           </Route>
         </Switch>
+
         <Switch>
           <Route strict exact path="/pages" component={PageTable}>
           </Route>
         </Switch>
         <Switch>
           <Route strict exact path="/pages/:pageId" component={PageForm}>
+          </Route>
+        </Switch>
+
+        <Switch>
+          <Route strict exact path="/configs" component={ConfigTable}>
+          </Route>
+        </Switch>
+        <Switch>
+          <Route strict exact path="/configs/:configId" component={ConfigForm}>
           </Route>
         </Switch>
       </Router>

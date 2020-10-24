@@ -247,26 +247,28 @@ function PageTable() {
                     <th>#</th>
                     <th>Name</th>
                     <th>URL</th>
-                    {/* <th>Created Time</th> */}
                     <th>Next Check</th>
-                    <th>Freq (hrs)</th>
                     <th>Retries</th>
                     <th>Active?</th>
                     <th>Config ID</th>
+                    <th>Prices</th>
+                    {/* <th>Created Time</th> */}
+                    {/* <th>Freq (hrs)</th> */}
                 </tr>
             </thead>
             <tbody>
                 {
                     data.map(row => <tr key={row.id}>
                         <td>{row.id}</td>
-                        <td><Nav.Link href={`/pages/${row.id}`}>{utils.truncate_name(row.name)}</Nav.Link></td>
-                        <td><a target="_blank" rel="noopener noreferrer" href={row.url}>Link</a></td>
-                        {/* <td>{row.created_time.slice(0, 19)}</td> */}
+                        <td><Nav.Link href={`/pages/${row.id}`}>{utils.truncate_string(row.name, config.maxNameLength)}</Nav.Link></td>
+                        <td><Nav.Link target="_blank" rel="noopener noreferrer" href={row.url}>Link</Nav.Link></td>
                         <td>{row.next_check.slice(0, 19)}</td>
-                        <td>{row.freq}</td>
                         <td>{row.retry}</td>
                         <td>{row.active ? 'YES' : 'NO'}</td>
                         <td><Nav.Link href={`/configs/${row.config_id}`}>{row.config_id}</Nav.Link></td>
+                        <td><Nav.Link href={`/prices/${row.id}`}>View</Nav.Link></td>
+                        {/* <td>{row.created_time.slice(0, 19)}</td> */}
+                        {/* <td>{row.freq}</td> */}
                     </tr>)
                 }
             </tbody>

@@ -1,15 +1,13 @@
-import config from "./config";
-
 /**
  * 
  * @param {String} name 
  * @param {Number} maxLength 
  */
-function truncate_name(name, maxLength = config.maxNameLength) {
+function truncate_string(name, maxLength) {
     if (name.length <= maxLength) {
         return name;
     }
     return name.slice(0, maxLength) + "...";
 }
 
-export default { truncate_name };
+export default { truncate_string: truncate_string };
