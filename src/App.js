@@ -57,7 +57,7 @@ function App() {
       {/* </div> */}
       <Router>
         <Switch>
-          <Route exact path="/prices/:pageId" component={PriceTable}>
+          <Route exact path="/prices/:id" component={PriceTable}>
           </Route>
         </Switch>
 
@@ -66,7 +66,7 @@ function App() {
           </Route>
         </Switch>
         <Switch>
-          <Route strict exact path="/pages/:pageId" component={PageForm}>
+          <Route strict exact path="/pages/:id" component={PageForm}>
           </Route>
         </Switch>
 
@@ -75,7 +75,7 @@ function App() {
           </Route>
         </Switch>
         <Switch>
-          <Route strict exact path="/configs/:configId" component={ConfigForm}>
+          <Route strict exact path="/configs/:id" component={ConfigForm}>
           </Route>
         </Switch>
       </Router>

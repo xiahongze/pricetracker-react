@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Table } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 
-function fetch_price(pageId) {
+function fetch_prices(pageId) {
     return {
         pageName: 'Nasonex',
         rows: [
@@ -19,10 +19,8 @@ function fetch_price(pageId) {
  * @param {String} props.match.params.pageId
  */
 function PriceTable(props) {
-    const pageId = props?.match?.params?.pageId || "-1";
-
-    // const { pageId } = 0;
-    const data = fetch_price(pageId)
+    const pageId = props?.match?.params?.id || "-1";
+    const data = fetch_prices(pageId)
     return <Container>
         <h1>Prices for {data.pageName} - Page id <Nav.Link href={`/pages/${pageId}`}>{pageId}</Nav.Link></h1>
         <Table striped bordered hover>
