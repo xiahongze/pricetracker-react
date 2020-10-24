@@ -2,6 +2,23 @@ import React from 'react';
 import { Button, Col, Container, Form, Badge } from 'react-bootstrap';
 
 class GenericForm extends React.Component {
+    async updateState(resp) {
+        if (resp.ok) {
+            const js = await resp.json()
+            this.setState(js);
+            this.originState = js;
+        } else {
+            console.error(await resp.text());
+        }
+    }
+
+    async handleSubmit(event) {
+        alert('Your state is: ' + JSON.stringify(this.state));
+        event.preventDefault();
+        const promise = this.state.id !== 'new' ? this.post(this.state) : this.put(this.state);
+        await this.updateState(await promise);
+    }
+
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -9,12 +26,6 @@ class GenericForm extends React.Component {
         this.setState({
             [name]: value
         });
-    }
-
-    handleSubmit(event) {
-        alert('Your state is: ' + JSON.stringify(this.state));
-        event.preventDefault();
-        this.post();
     }
 
     handleReset(event) {
@@ -38,7 +49,7 @@ class GenericForm extends React.Component {
     makeFormGroup({ label, propName, asCol = true, onChange = true, disabled = false, formType = "text" } = {}) {
         const col = asCol ? Col : "div";
         const onChangeFunc = onChange ? this.handleInputChange : null;
-        const inputField = formType != 'checkbox' ? <Form.Control
+        const inputField = formType !== 'checkbox' ? <Form.Control
             type={formType} name={propName} disabled={disabled} placeholder={label}
             value={this.state[propName]} onChange={onChangeFunc} /> : <Form.Check
                 type="checkbox" name={propName} checked={this.state[propName]}
@@ -49,12 +60,15 @@ class GenericForm extends React.Component {
         </Form.Group>
     }
 
-    constructor(props, fetch, post) {
+    constructor(props, fetch, post, put) {
         super(props);
-        this.id = props?.match?.params?.id || "new"; // use it to 
-        this.originState = fetch(this.id);
-        this.state = this.originState;
+
+        this.updateState = this.updateState.bind(this);
+        this.originState = this.state;
+
+        this.fetch = fetch;
         this.post = post;
+        this.put = put;
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,9 +77,18 @@ class GenericForm extends React.Component {
         this.makeFormGroup = this.makeFormGroup.bind(this);
     }
 
+    async componentDidMount() {
+        // check if this is an edit or a new page
+        const id = this.props?.match?.params?.id || 'new';
+        if (id !== 'new') {
+            const resp = await this.fetch(id);
+            await this.updateState(resp);
+        }
+    }
+
     makeForm(formBody) {
         return <Container>
-            <h2><Badge variant="secondary">{this.id == "new" ? "New" : "Edit"}</Badge></h2>
+            <h2><Badge variant="secondary">{this.state.id === "new" ? "New" : "Edit"}</Badge></h2>
             {formBody}
             <Form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                 <Button variant="primary" type="submit">Submit</Button>

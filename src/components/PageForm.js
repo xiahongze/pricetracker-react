@@ -1,23 +1,27 @@
 import React from 'react';
 import { Col, Form } from 'react-bootstrap';
+import config from "../config";
+import utils from "../utils";
 import GenericForm from "./GenericForm";
 
 class PageForm extends GenericForm {
 
+    state = {
+        "id": "new",
+        "name": "",
+        "url": "https://example.com",
+        "created_time": "2020-09-05T17:20:47.090837",
+        "next_check": "2020-10-23T15:37:38.529417",
+        "freq": 24,
+        "retry": 0,
+        "active": true,
+        "user_id": config.userId,
+        "config_id": 1
+    }
+
     constructor(props) {
-        const fetch = (id) => ({
-            "id": 1,
-            "name": "Sunset Canola Oil",
-            "url": "https://shop.coles.com.au/a/national/product/gold-sunset-canola-oil",
-            "created_time": "2020-09-05T17:20:47.090837",
-            "next_check": "2020-10-23T15:37:38.529417",
-            "freq": 24,
-            "retry": 0,
-            "active": true,
-            "user_id": 1,
-            "config_id": 1
-        });
-        super(props, fetch, (id, obj) => console.log(id));
+        const fetch = async (id) => utils.get(config.pageApi, { idx: id });
+        super(props, fetch, fetch, fetch);
     }
 
     render() {
