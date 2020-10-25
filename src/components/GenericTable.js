@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 
-export function makeTable({ name, headers, makeRow, fetchData }) {
+export function loadAndMount({ fetchData, makeComponent, isItemList }) {
     return (props) => {
         const [error, setError] = useState(null);
         const [isLoaded, setIsLoaded] = useState(false);
-        const [items, setItems] = useState([]);
+        const [item, setItem] = useState(isItemList ? [] : {});
 
         // reference:
         // https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
@@ -18,7 +18,7 @@ export function makeTable({ name, headers, makeRow, fetchData }) {
                     (result) => {
                         if (isMounted) {
                             setIsLoaded(true);
-                            setItems(result);
+                            setItem(result);
                         }
                     },
                     // Note: it's important to handle errors here
@@ -29,6 +29,7 @@ export function makeTable({ name, headers, makeRow, fetchData }) {
                         setError(error);
                     }
                 );
+
             return () => { isMounted = false }; // use effect cleanup to set flag false, if unmounted
         }, [])
 
@@ -37,22 +38,17 @@ export function makeTable({ name, headers, makeRow, fetchData }) {
         } else if (!isLoaded) {
             return <>Loading...</>;
         } else {
-            return <>
-                <Table striped bordered hover data-testid={`${name}-table`}>
-                    <thead>
-                        <tr>
-                            {
-                                headers.map(hr => <th key={hr}>{hr}</th>)
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            items.map(makeRow)
-                        }
-                    </tbody>
-                </Table>
-            </>
+            return <>{makeComponent(item)}</>
         }
     }
+}
+
+export function makeTable({ name, headers, makeRow, fetchData }) {
+    const makeComponent = (items) => <Table striped bordered hover data-testid={`${name}-table`}>
+        <thead>
+            <tr>{headers.map(hr => <th key={hr}>{hr}</th>)}</tr>
+        </thead>
+        <tbody>{items.map(makeRow)}</tbody>
+    </Table>
+    return loadAndMount({ fetchData: fetchData, makeComponent: makeComponent, isItemList: true });
 }
