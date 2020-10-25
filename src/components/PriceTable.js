@@ -18,11 +18,13 @@ function PriceTable(props) {
     const [page, setPage] = useState({});
     const updateFunc = async () => {
         try {
-            const pageResp = await utils.get(config.pageApi, { idx: pageId });
-            const priceResp = await utils.get(config.priceApi, { page_id: pageId });
-            const page = await pageResp.json();
+            // promise chaining, make sure that list of promises are converted
+            // to a single promise with Promise.all
+            const [page, prices] = await Promise.all([
+                utils.get(config.pageApi, { idx: pageId }),
+                utils.get(config.priceApi, { page_id: pageId })
+            ]).then(resps => Promise.all(resps.map(resp => resp.json())));
             setPage(page);
-            const prices = await priceResp.json();
             setItems(prices);
             setIsLoaded(true);
         } catch (error) {
