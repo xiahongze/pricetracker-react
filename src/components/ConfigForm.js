@@ -1,17 +1,20 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import config from "../config";
+import utils from "../utils";
 import GenericForm from "./GenericForm";
 
 class ConfigForm extends GenericForm {
+    state = {
+        "id": "new",
+        "name": "Name",
+        "xpath": "XPATH",
+        "active": true
+    }
+
     constructor(props) {
-        const fetch = (id) => {
-            return {
-                "id": 1,
-                "name": "Coles",
-                "xpath": "//span/strong[@class=\"product-price\"] | //*[@id=\"main-content-inside\"]/div[2]/div/header/div[3]/div/span[1]",
-                "active": true
-            };
-        }
+        const fetch = async (id) => utils.get(config.configApi, { idx: id });
+
         super(props, fetch, (id, obj) => console.log(id));
     }
 
