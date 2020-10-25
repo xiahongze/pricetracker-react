@@ -17,12 +17,11 @@ function PriceTable(props) {
     const [items, setItems] = useState([]);
     const [page, setPage] = useState({});
 
-
     useEffect(() => {
         // the async function is better to be defined within the local scope such
         // that it is not affecting the rendering of the view as it may change
         // unintentionally because of the states it captures.
-        const updateFunc = async () => {
+        async function updateFunc() {
             try {
                 // promise chaining, make sure that list of promises are converted
                 // to a single promise with Promise.all
@@ -38,6 +37,7 @@ function PriceTable(props) {
                 setError(error);
             }
         };
+
         updateFunc();
     }, [pageId]); // the deps are only about the things it needs
 
