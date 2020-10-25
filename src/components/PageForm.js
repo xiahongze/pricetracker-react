@@ -24,8 +24,8 @@ class PageForm extends GenericForm {
         super(props, fetch, fetch, fetch);
     }
 
-    render() {
-        const formBody = <div>
+    makeFormBody() {
+        return <>
             {/* Display only properties */}
             <Form.Row>
                 {
@@ -65,8 +65,7 @@ class PageForm extends GenericForm {
                 </Form.Group>
                 {this.makeFormGroup({ label: "Active?", propName: "active", formType: "checkbox" })}
             </Form.Row>
-        </div>
-        return this.makeForm(formBody);
+        </>;
     }
 }
 

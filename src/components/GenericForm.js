@@ -7,15 +7,18 @@ class GenericForm extends React.Component {
             const js = await resp.json()
             this.setState(js);
             this.originState = js;
+            this.setState({ isLoaded: true })
         } else {
             console.error(await resp.text());
+            // TODO: display error somewhere
         }
     }
 
     async handleSubmit(event) {
         alert('Your state is: ' + JSON.stringify(this.state));
         event.preventDefault();
-        const promise = this.state.id !== 'new' ? this.post(this.state) : this.put(this.state);
+        const js = Object.assign({}, this.state, { isLoaded: undefined });// remove isLoaded
+        const promise = this.state.id !== 'new' ? this.post(js) : this.put(js);
         await this.updateState(await promise);
     }
 
@@ -63,17 +66,18 @@ class GenericForm extends React.Component {
     constructor(props, fetch, post, put) {
         super(props);
 
-        this.updateState = this.updateState.bind(this);
+        this.state = {};
         this.originState = this.state;
 
         this.fetch = fetch;
         this.post = post;
         this.put = put;
 
+        this.updateState = this.updateState.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
-        this.makeForm = this.makeForm.bind(this);
+        this.makeFormBody = this.makeFormBody.bind(this);
         this.makeFormGroup = this.makeFormGroup.bind(this);
     }
 
@@ -84,18 +88,29 @@ class GenericForm extends React.Component {
             const resp = await this.fetch(id);
             await this.updateState(resp);
         }
+        this.setState({ isLoaded: true });
     }
 
-    makeForm(formBody) {
+    /**
+     * this method needs to be overwritten by subclasses
+     */
+    makeFormBody() {
+        return <></>
+    }
+
+    render() {
+        if (!this.state.isLoaded) {
+            return <></>;
+        }
         return <Container>
             <h2><Badge variant="secondary">{this.state.id === "new" ? "New" : "Edit"}</Badge></h2>
-            {formBody}
+            {this.makeFormBody()}
             <Form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                 <Button variant="primary" type="submit">Submit</Button>
                 {' '/* add some whitespace */}
                 <Button variant="secondary" type="reset">Reset</Button>
             </Form>
-        </Container>
+        </Container>;
     }
 }
 

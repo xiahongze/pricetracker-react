@@ -14,12 +14,11 @@ class ConfigForm extends GenericForm {
 
     constructor(props) {
         const fetch = async (id) => utils.get(config.configApi, { idx: id });
-
         super(props, fetch, (id, obj) => console.log(id));
     }
 
-    render() {
-        const formBody = <div>
+    makeFormBody() {
+        return <>
             <Form.Row>
                 {
                     [
@@ -30,8 +29,7 @@ class ConfigForm extends GenericForm {
                 }
             </Form.Row>
             {this.makeFormGroup({ label: "XPATH", propName: "xpath", asCol: false })}
-        </div>
-        return this.makeForm(formBody);
+        </>;
     }
 }
 
