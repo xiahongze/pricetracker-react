@@ -8,7 +8,7 @@ const config = {
     pageApi: `${baseUrl}/page/`,
     pageListApi: `${baseUrl}/page/list?user_id=${userId}`,
     configApi: `${baseUrl}/website-config/`,
-    configListApi: `${baseUrl}/website-config/list/`,
+    configListApi: `${baseUrl}/website-config/list`,
 }
 
 export default config
