@@ -7,7 +7,7 @@ import { makeTable } from "./GenericTable";
 
 function PageTable() {
     const Table = makeTable({
-        name: 'config',
+        name: 'page',
         headers: ['#', 'Name', 'URL', 'Next Check', 'Retries', 'Active?', 'Config ID', 'Prices'],
         makeRow: row => <tr key={row.id}>
             <td>{row.id}</td>
@@ -21,13 +21,13 @@ function PageTable() {
             {/* <td>{row.created_time.slice(0, 19)}</td> */}
             {/* <td>{row.freq}</td> */}
         </tr>,
-        fetchData: fetch.bind(null, config.pageListApi)
-    })
+        fetchData: utils.get.bind(null, config.pageListApi)
+    });
 
     return <Container>
         <h1>Page List</h1>
         <Table></Table>
-    </Container>
+    </Container>;
 }
 
 export default PageTable;

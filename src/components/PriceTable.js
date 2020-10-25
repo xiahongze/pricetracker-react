@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import config from '../config';
 import utils from "../utils";
+import { makeTable } from "./GenericTable";
 
 /**
  * 
@@ -12,33 +13,36 @@ import utils from "../utils";
  */
 function PriceTable(props) {
     const pageId = props?.match?.params?.id || "-1";
+
+    const Table = makeTable({
+        name: 'price',
+        headers: ['#', 'Price', 'Created Time'],
+        makeRow: row => <tr key={row.id}>
+            <td>{row.id}</td>
+            <td>{row.price}</td>
+            <td>{row.created_time}</td>
+        </tr>,
+        fetchData: utils.get.bind(null, config.priceApi, { page_id: pageId })
+    });
+
+    const [page, setPage] = useState({});
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [items, setItems] = useState([]);
-    const [page, setPage] = useState({});
 
     useEffect(() => {
-        // the async function is better to be defined within the local scope such
-        // that it is not affecting the rendering of the view as it may change
-        // unintentionally because of the states it captures.
-        async function updateFunc() {
-            try {
-                // promise chaining, make sure that list of promises are converted
-                // to a single promise with Promise.all
-                const [page, prices] = await Promise.all([
-                    utils.get(config.pageApi, { idx: pageId }),
-                    utils.get(config.priceApi, { page_id: pageId })
-                ]).then(resps => Promise.all(resps.map(resp => resp.json())));
-                setPage(page);
-                setItems(prices);
+        let isMounted = true;
+        utils.get(config.pageApi, { idx: pageId }).then(
+            resp => resp.json()
+        ).then((js) => {
+            if (isMounted) {
                 setIsLoaded(true);
-            } catch (error) {
-                setIsLoaded(true);
-                setError(error);
+                setPage(js);
             }
-        };
-
-        updateFunc();
+        }, (error) => {
+            setIsLoaded(true);
+            setError(error);
+        });
+        return () => { isMounted = false };
     }, [pageId]); // the deps are only about the things it needs
 
     if (error) {
@@ -48,24 +52,7 @@ function PriceTable(props) {
     } else {
         return <Container>
             <h1>Prices for <a href={`/pages/${pageId}`}>{page.name}</a></h1>
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Price</th>
-                        <th>Created Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        items.map(row => <tr key={row.id}>
-                            <td>{row.id}</td>
-                            <td>{row.price}</td>
-                            <td>{row.created_time}</td>
-                        </tr>)
-                    }
-                </tbody>
-            </Table>
+            <Table></Table>
         </Container>
     }
 }

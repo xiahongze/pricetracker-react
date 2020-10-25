@@ -7,13 +7,19 @@ export function makeTable({ name, headers, makeRow, fetchData }) {
         const [isLoaded, setIsLoaded] = useState(false);
         const [items, setItems] = useState([]);
 
+        // reference:
+        // https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
         useEffect(() => {
+            let isMounted = true; // note this flag denote mount status
+
             fetchData()
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        setIsLoaded(true);
-                        setItems(result);
+                        if (isMounted) {
+                            setIsLoaded(true);
+                            setItems(result);
+                        }
                     },
                     // Note: it's important to handle errors here
                     // instead of a catch() block so that we don't swallow
@@ -22,7 +28,8 @@ export function makeTable({ name, headers, makeRow, fetchData }) {
                         setIsLoaded(true);
                         setError(error);
                     }
-                )
+                );
+            return () => { isMounted = false }; // use effect cleanup to set flag false, if unmounted
         }, [])
 
         if (error) {
