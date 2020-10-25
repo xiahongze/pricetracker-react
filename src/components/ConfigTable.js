@@ -5,20 +5,19 @@ import config from '../config';
 import utils from "../utils";
 import { makeTable } from "./GenericTable";
 
+const Table = makeTable({
+    name: 'config',
+    headers: ['#', 'Name', 'XPATH', 'Active?'],
+    makeRow: row => <tr key={row.id}>
+        <td>{row.id}</td>
+        <td><Nav.Link href={`/configs/${row.id}`}>{row.name}</Nav.Link></td>
+        <td>{utils.truncate(row.xpath, 40)}</td>
+        <td>{row.active ? 'YES' : 'NO'}</td>
+    </tr>,
+    fetchData: utils.get.bind(null, config.configListApi)
+});
 
 function ConfigTable() {
-    const Table = makeTable({
-        name: 'config',
-        headers: ['#', 'Name', 'XPATH', 'Active?'],
-        makeRow: row => <tr key={row.id}>
-            <td>{row.id}</td>
-            <td><Nav.Link href={`/configs/${row.id}`}>{row.name}</Nav.Link></td>
-            <td>{utils.truncate(row.xpath, 40)}</td>
-            <td>{row.active ? 'YES' : 'NO'}</td>
-        </tr>,
-        fetchData: utils.get.bind(null, config.configListApi)
-    });
-
     return <Container>
         <h1>Config List</h1>
         <Table></Table>
