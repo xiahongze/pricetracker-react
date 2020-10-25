@@ -1,15 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
-import Nav from 'react-bootstrap/Nav';
-
-function fetch_prices(pageId) {
-    return {
-        pageName: 'Nasonex',
-        rows: [
-            { priceId: 1, price: '$27.99', createdTime: new Date().toLocaleString() }
-        ]
-    }
-}
+import config from '../config';
+import utils from "../utils";
 
 /**
  * 
@@ -20,28 +12,56 @@ function fetch_prices(pageId) {
  */
 function PriceTable(props) {
     const pageId = props?.match?.params?.id || "-1";
-    const data = fetch_prices(pageId)
-    return <Container>
-        <h1>Prices for {data.pageName} - Page id <Nav.Link href={`/pages/${pageId}`}>{pageId}</Nav.Link></h1>
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Price</th>
-                    <th>Created Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    data.rows.map(row => <tr key={row.priceId}>
-                        <td>{row.priceId}</td>
-                        <td>{row.price}</td>
-                        <td>{row.createdTime}</td>
-                    </tr>)
-                }
-            </tbody>
-        </Table>
-    </Container>
+    const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [items, setItems] = useState([]);
+    const [page, setPage] = useState({});
+    const updateFunc = async () => {
+        try {
+            const pageResp = await utils.get(config.pageApi, { idx: pageId });
+            const priceResp = await utils.get(config.priceApi, { page_id: pageId });
+            const page = await pageResp.json();
+            setPage(page);
+            const prices = await priceResp.json();
+            setItems(prices);
+            setIsLoaded(true);
+        } catch (error) {
+            setIsLoaded(true);
+            setError(error);
+        }
+    };
+
+    useEffect(() => {
+        updateFunc();
+    }, []); // the deps is an empty list as we only need to load it once
+
+    if (error) {
+        return <Container>Error: {error.message}</Container>;
+    } else if (!isLoaded) {
+        return <Container>Loading...</Container>;
+    } else {
+        return <Container>
+            <h1>Prices for <a href={`/pages/${pageId}`}>{page.name}</a></h1>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Price</th>
+                        <th>Created Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        items.map(row => <tr key={row.id}>
+                            <td>{row.id}</td>
+                            <td>{row.price}</td>
+                            <td>{row.created_time}</td>
+                        </tr>)
+                    }
+                </tbody>
+            </Table>
+        </Container>
+    }
 }
 
 export default PriceTable;
