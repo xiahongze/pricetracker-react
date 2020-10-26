@@ -2,7 +2,8 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import config from '../config';
 import utils from "../utils";
-import { loadAndMount, makeTable } from "./GenericTable";
+import { fetchAndDisplay } from "./fetchAndDisplay";
+import { makeTable } from "./GenericTable";
 
 /**
  * 
@@ -25,7 +26,7 @@ function PriceTable(props) {
         fetchData: utils.get.bind(null, config.priceApi, { page_id: pageId })
     });
 
-    const Header = loadAndMount({
+    const Header = fetchAndDisplay({
         fetchData: utils.get.bind(null, config.pageApi, { idx: pageId }),
         makeComponent: (page) => <h1>Prices for <a href={`/pages/${pageId}`}>{page.name}</a></h1>,
         isItemList: false

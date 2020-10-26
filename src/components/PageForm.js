@@ -2,7 +2,9 @@ import React from 'react';
 import { Col, Form } from 'react-bootstrap';
 import config from "../config";
 import utils from "../utils";
+import { fetchAndDisplay } from "./fetchAndDisplay";
 import GenericForm from "./GenericForm";
+
 
 class PageForm extends GenericForm {
 
@@ -24,6 +26,16 @@ class PageForm extends GenericForm {
         const post = utils.post.bind(null, config.pageApi);
         const put = utils.put.bind(null, config.pageApi);
         super(props, fetch, post, put);
+
+        this.ConfigOptions = fetchAndDisplay({
+            fetchData: utils.get.bind(null, config.configListApi),
+            isItemList: true,
+            makeComponent: items => <Form.Control as="select" name="config_id" onChange={this.handleInputChange} value={this.state.config_id}>
+                {
+                    items.map(it => <option key={it.id} value={it.id}>{`${it.id}. ${it.name}`}</option>)
+                }
+            </Form.Control>
+        })
     }
 
     makeFormBody() {
@@ -59,11 +71,7 @@ class PageForm extends GenericForm {
                 {this.makeFormGroup({ label: "Frequency", propName: "freq", formType: "number" })}
                 <Form.Group as={Col}>
                     <Form.Label>Config</Form.Label>
-                    <Form.Control as="select" name="config_id" onChange={this.handleInputChange} value={this.state.config_id}>
-                        {
-                            [1, 2, 3, 4, 5].map(i => <option key={i}>{i}</option>)
-                        }
-                    </Form.Control>
+                    <this.ConfigOptions></this.ConfigOptions>
                 </Form.Group>
                 {this.makeFormGroup({ label: "Active?", propName: "active", formType: "checkbox" })}
             </Form.Row>
