@@ -15,11 +15,12 @@ class GenericForm extends React.Component {
     }
 
     async handleSubmit(event) {
-        alert('Your state is: ' + JSON.stringify(this.state));
         event.preventDefault();
         const js = Object.assign({}, this.state, { isLoaded: undefined });// remove isLoaded
+        console.log('About to submit: ' + JSON.stringify(js));
         const promise = this.state.id !== 'new' ? this.post(js) : this.put(js);
         await this.updateState(await promise);
+        alert("Submitted!")
     }
 
     handleInputChange(event) {
@@ -37,6 +38,7 @@ class GenericForm extends React.Component {
         // this.selectList.forEach(console.log)
         event.preventDefault();
         this.setState(this.originState);
+        alert("Reset!")
     }
 
     /**

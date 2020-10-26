@@ -21,7 +21,9 @@ class PageForm extends GenericForm {
 
     constructor(props) {
         const fetch = async (id) => utils.get(config.pageApi, { idx: id });
-        super(props, fetch, fetch, fetch);
+        const post = utils.post.bind(null, config.pageApi);
+        const put = utils.put.bind(null, config.pageApi);
+        super(props, fetch, post, put);
     }
 
     makeFormBody() {

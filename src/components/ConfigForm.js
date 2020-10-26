@@ -14,7 +14,9 @@ class ConfigForm extends GenericForm {
 
     constructor(props) {
         const fetch = async (id) => utils.get(config.configApi, { idx: id });
-        super(props, fetch, (id, obj) => console.log(id));
+        const post = utils.post.bind(null, config.configApi);
+        const put = utils.put.bind(null, config.configApi);
+        super(props, fetch, post, put);
     }
 
     makeFormBody() {
