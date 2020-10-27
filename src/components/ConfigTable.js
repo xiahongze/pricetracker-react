@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import config from '../config';
 import utils from "../utils";
@@ -19,7 +19,10 @@ const Table = makeTable({
 
 function ConfigTable() {
     return <Container>
-        <h1>Config List</h1>
+        <Row>
+            <Col><h1>Config List</h1></Col>
+            <Col className="text-right"><h1><Button variant="primary" href="/configs/new">NEW</Button></h1></Col>
+        </Row>
         <Table></Table>
     </Container>;
 }
