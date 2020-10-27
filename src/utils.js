@@ -26,7 +26,9 @@ function get(url, query) {
 
 function sendJsonVia(choice) {
     return (url, obj) => {
-        const req = new Request(url, { method: choice, headers: "application/json", body: JSON.stringify(obj) })
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        const req = new Request(url, { method: choice, headers: headers, body: JSON.stringify(obj) })
         return fetch(req);
     }
 }
