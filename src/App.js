@@ -1,37 +1,32 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import {
-  BrowserRouter as Router,
-  Route, Switch
-} from "react-router-dom";
-import './App.css';
-import ConfigTable from "./components/ConfigTable";
+import { Button, Container, Form, FormControl, Jumbotron, Nav, Navbar } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ConfigForm from "./components/ConfigForm";
+import ConfigTable from "./components/ConfigTable";
 import PageForm from "./components/PageForm";
 import PageTable from "./components/PageTable";
-// import logo from './logo.svg';
 import PriceTable from "./components/PriceTable";
 
 function App() {
+  const routes = [
+    { path: "/prices/:id", component: PriceTable },
+    { path: "/pages", component: PageTable },
+    { path: "/pages/:id", component: PageForm },
+    { path: "/configs", component: ConfigTable },
+    { path: "/configs/:id", component: ConfigForm },
+  ]
+
   return (
     <Container>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Pricetracker</Navbar.Brand>
+        <Navbar.Brand href="/">Pricetracker</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="/prices">Prices</Nav.Link>
+            <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/pages">Pages</Nav.Link>
             <Nav.Link href="/configs">Configs</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-            </NavDropdown>
           </Nav>
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -39,45 +34,20 @@ function App() {
           </Form>
         </Navbar.Collapse>
       </Navbar>
-      {/* <div className="App"> */}
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      {/* </div> */}
       <Router>
         <Switch>
-          <Route exact path="/prices/:id" component={PriceTable}>
+          <Route exact path="/">
+            <Jumbotron>
+              <h1>Hello, hard-working thrifty person!</h1>
+              <p>Track the prices of your interesting goods, from groceries to any fancy consumer products!</p>
+              <p><Button variant="primary" href="/pages">View Pages</Button></p>
+            </Jumbotron>
           </Route>
         </Switch>
 
-        <Switch>
-          <Route strict exact path="/pages" component={PageTable}>
-          </Route>
-        </Switch>
-        <Switch>
-          <Route strict exact path="/pages/:id" component={PageForm}>
-          </Route>
-        </Switch>
-
-        <Switch>
-          <Route strict exact path="/configs" component={ConfigTable}>
-          </Route>
-        </Switch>
-        <Switch>
-          <Route strict exact path="/configs/:id" component={ConfigForm}>
-          </Route>
-        </Switch>
+        {
+          routes.map((r, i) => <Switch key={i}><Route strict exact path={r.path} component={r.component}></Route></Switch>)
+        }
       </Router>
     </Container >
   );
