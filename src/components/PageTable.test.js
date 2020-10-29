@@ -1,11 +1,11 @@
+import { render, waitForElement } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
 import PageTable from './PageTable';
 
 
-test('renders learn react link', () => {
+test('renders learn react link', async () => {
     const { getByTestId } = render(<PageTable />);
-    const table = getByTestId('page-table');
+    const table = await waitForElement(() => getByTestId('page-table'));
     // const linkElement = getByText(/price/i);
     expect(table).toBeInTheDocument();
     const header = table.firstChild;

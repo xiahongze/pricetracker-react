@@ -41,6 +41,7 @@
     "@types/jest": "^26.0.15",
     "eslint": "^6.6.0",
     "eslint-plugin-react": "^6.6.0",
+    "msw": "^0.21.3",
     "react-styleguidist": "^11.1.0"
   }
 }
