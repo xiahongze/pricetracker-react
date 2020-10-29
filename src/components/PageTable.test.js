@@ -1,9 +1,11 @@
 import { render, waitForElement } from '@testing-library/react';
+import { rest } from 'msw';
 import React from 'react';
+import config from "../config";
+import { server } from "../setupTests";
 import PageTable from './PageTable';
 
-
-test('renders learn react link', async () => {
+test('renders page table', async () => {
     const { getByTestId } = render(<PageTable />);
     const table = await waitForElement(() => getByTestId('page-table'));
     // const linkElement = getByText(/price/i);
@@ -15,4 +17,19 @@ test('renders learn react link', async () => {
     expect(table.childNodes.length).toBe(2);
     const tbody = table.childNodes[1];
     expect(tbody.nodeName).toBe('TBODY');
+});
+
+test('renders page table error', async () => {
+    server.use(
+        rest.get(config.pageListApi, (req, res, ctx) => {
+            return res.once(
+                ctx.status(404),
+                ctx.json({ message: "bad request" })
+            )
+        })
+    );
+
+    const { getByText } = render(<PageTable />);
+    const error = await waitForElement(() => getByText(/error/i));
+    expect(error).toBeInTheDocument();
 });

@@ -13,7 +13,14 @@ export function fetchAndDisplay({ fetchData, makeComponent, isItemList }) {
             let isMounted = true; // note this flag denote mount status
 
             fetchData()
-                .then(res => res.json())
+                .then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                    return res
+                        .text()
+                        .then(text => { throw new Error(text) });
+                })
                 .then(
                     (result) => {
                         if (isMounted) {

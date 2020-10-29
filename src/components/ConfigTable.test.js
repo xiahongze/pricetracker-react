@@ -3,7 +3,7 @@ import React from 'react';
 import ConfigTable from './ConfigTable';
 
 
-test('renders learn react link', async () => {
+test('renders config table', async () => {
     const { getByTestId } = render(<ConfigTable />);
     const table = await waitForElement(() => getByTestId('config-table'));
     // const linkElement = getByText(/price/i);

@@ -9,8 +9,8 @@ import { setupServer } from 'msw/node';
 import config from "./config";
 
 
-const server = setupServer(
-    rest.get(`${config.pageListApi}`, (req, res, ctx) => {
+export const server = setupServer(
+    rest.get(config.pageListApi, (req, res, ctx) => {
         return res(ctx.json([
             {
                 "id": 1,
@@ -61,7 +61,7 @@ const server = setupServer(
                 "config_id": 1
             }]))
     }),
-    rest.get(`${config.configListApi}`, (req, res, ctx) => {
+    rest.get(config.configListApi, (req, res, ctx) => {
         return res(ctx.json([
             {
                 "id": 1,
@@ -83,7 +83,7 @@ const server = setupServer(
             }
         ]))
     }),
-    rest.get(`${config.priceApi}`, (req, res, ctx) => {
+    rest.get(config.priceApi, (req, res, ctx) => {
         return res(ctx.json(
             [
                 {
@@ -107,7 +107,7 @@ const server = setupServer(
             ]
         ));
     }),
-    rest.get(`${config.pageApi}`, (req, res, ctx) => {
+    rest.get(config.pageApi, (req, res, ctx) => {
         return res(ctx.json({
             "id": 1,
             "name": "Sunset Canola Oil",
