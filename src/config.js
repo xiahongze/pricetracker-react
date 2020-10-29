@@ -1,4 +1,4 @@
-const baseUrl = window.location.origin;
+const baseUrl = `${window.location.origin}/api`;
 const userId = 1;
 const config = {
     userId: userId,
