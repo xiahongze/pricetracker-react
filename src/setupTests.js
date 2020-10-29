@@ -61,6 +61,28 @@ const server = setupServer(
                 "config_id": 1
             }]))
     }),
+    rest.get(`${config.configListApi}`, (req, res, ctx) => {
+        return res(ctx.json([
+            {
+                "id": 1,
+                "name": "Coles",
+                "xpath": "//span/strong[@class=\"product-price\"] | //*[@id=\"main-content-inside\"]/div[2]/div/header/div[3]/div/span[1]",
+                "active": true
+            },
+            {
+                "id": 2,
+                "name": "Woolies",
+                "xpath": "//div[@class=\"price price--large\"] | //div[@class=\"price price--large ng-star-inserted\"]",
+                "active": true
+            },
+            {
+                "id": 3,
+                "name": "Chemist",
+                "xpath": "//span[@class=\"product__price\"] | //div[@class=\"product__price\"] | //div[@class=\"Price\"]",
+                "active": true
+            }
+        ]))
+    }),
     rest.get(`${config.priceApi}`, (req, res, ctx) => {
         return res(ctx.json(
             [
