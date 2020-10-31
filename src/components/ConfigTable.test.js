@@ -1,11 +1,11 @@
-import { render, waitForElement } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import ConfigTable from './ConfigTable';
 
 
 test('renders config table', async () => {
-    const { getByTestId } = render(<ConfigTable />);
-    const table = await waitForElement(() => getByTestId('config-table'));
+    const { findByTestId } = render(<ConfigTable />);
+    const table = await findByTestId('config-table');
     // const linkElement = getByText(/price/i);
     expect(table).toBeInTheDocument();
     const header = table.firstChild;

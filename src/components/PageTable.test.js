@@ -1,4 +1,4 @@
-import { render, waitForElement } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { rest } from 'msw';
 import React from 'react';
 import config from "../config";
@@ -6,9 +6,8 @@ import { server } from "../setupTests";
 import PageTable from './PageTable';
 
 test('renders page table', async () => {
-    const { getByTestId } = render(<PageTable />);
-    const table = await waitForElement(() => getByTestId('page-table'));
-    // const linkElement = getByText(/price/i);
+    const { findByTestId } = render(<PageTable />);
+    const table = await findByTestId('page-table');
     expect(table).toBeInTheDocument();
     const header = table.firstChild;
     expect(header.nodeName).toBe('THEAD');
@@ -29,7 +28,7 @@ test('renders page table error', async () => {
         })
     );
 
-    const { getByText } = render(<PageTable />);
-    const error = await waitForElement(() => getByText(/error/i));
+    const { findByText } = render(<PageTable />);
+    const error = await findByText(/error/i);
     expect(error).toBeInTheDocument();
 });

@@ -120,14 +120,29 @@ export const server = setupServer(
             "user_id": 1,
             "config_id": 1
         }));
+    }),
+    rest.post(config.pageApi, async (req, res, ctx) => {
+        return res(ctx.json(await req.json()));
+    }),
+    rest.put(config.pageApi, async (req, res, ctx) => {
+        req.body.id = 1;
+        return res(ctx.json(req.body));
     })
 )
 
+const originAlert = window.alert;
+
 // Enable API mocking before tests.
-beforeAll(() => server.listen());
+beforeAll(() => {
+    server.listen();
+    window.alert = console.log;
+});
 
 // Reset any runtime request handlers we may add during the tests.
 afterEach(() => server.resetHandlers());
 
 // Disable API mocking after the tests are done.
-afterAll(() => server.close());
+afterAll(() => {
+    server.close();
+    window.alert = originAlert;
+});

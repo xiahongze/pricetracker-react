@@ -1,12 +1,11 @@
-import { render, waitForElement } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import PriceTable from './PriceTable';
 
 
 test('renders price table', async () => {
-    const { getByTestId } = render(<PriceTable />);
-    const table = await waitForElement(() => getByTestId('price-table'));
-    // const linkElement = getByText(/price/i);
+    const { findByTestId } = render(<PriceTable />);
+    const table = await findByTestId('price-table');
     expect(table).toBeInTheDocument();
     const header = table.firstChild;
     expect(header.nodeName).toBe('THEAD');
