@@ -16,7 +16,9 @@ class GenericForm extends React.Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        const js = Object.assign({}, this.state, { isLoaded: undefined });// remove isLoaded
+        // remove isLoaded and id if it is 'new'
+        const js = Object.assign({}, this.state,
+            { isLoaded: undefined, id: this.state.id == 'new' ? undefined : this.state.id });
         console.log('About to submit: ' + JSON.stringify(js));
         const promise = this.state.id !== 'new' ? this.post(js) : this.put(js);
         await this.updateState(await promise);
